@@ -6,7 +6,7 @@
 /*   By: ltomasze <ltomasze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 12:36:46 by ltomasze          #+#    #+#             */
-/*   Updated: 2024/04/08 15:14:59 by ltomasze         ###   ########.fr       */
+/*   Updated: 2024/04/11 14:29:36 by ltomasze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,34 +15,25 @@
 char	*get_next_line(int fd)
 {
 	static char		*temp;
-	char			*buffer;
-	int				bytes_read;
+	static char		buffer[BUFFER_SIZE + 1];
+	int				read_b;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
-		return (free(temp), temp = NULL, NULL);
-	if (have_n(temp))
-		return (print_line(&temp));
-	buffer = (char *)malloc((BUFFER_SIZE + 1) * sizeof(char));
-	if (!buffer)
-		return (NULL);
-	bytes_read = 1;
-	while (bytes_read > 0)
+		return (temp = NULL, NULL);
+	if (find_n(temp))
+		return (put_line(&temp));
+	read_b = 1;
+	while (read_b > 0)
 	{
-		bytes_read = read(fd, buffer, BUFFER_SIZE);
-		if (bytes_read < 0)
-		{
-			free(buffer);
+		read_b = read(fd, buffer, BUFFER_SIZE);
+		if (read_b == -1)
 			return (NULL);
-		}
-		buffer[bytes_read] = 0;
+		buffer[read_b] = '\0';
 		temp = ft_strjoin(temp, buffer);
-		if (have_n(temp))
+		if (find_n(temp))
 			break ;
 	}
-	if (buffer)
-		free(buffer);
-	buffer = NULL;
-	return (print_line(&temp));
+	return (put_line(&temp));
 }
 /*
 int main(void)
@@ -62,5 +53,7 @@ int main(void)
         printf("fd: %i, %s\n", fd, str);
         i++;
     }
+	free(str);
     return (0);
-}*/
+}
+*/

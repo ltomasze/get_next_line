@@ -6,7 +6,7 @@
 /*   By: ltomasze <ltomasze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 12:37:01 by ltomasze          #+#    #+#             */
-/*   Updated: 2024/04/08 11:48:30 by ltomasze         ###   ########.fr       */
+/*   Updated: 2024/04/11 13:39:11 by ltomasze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,84 +17,86 @@ int	ft_strlen(char *s)
 	int	i;
 
 	i = 0;
-	if (!s)
+	if (s == NULL)
 		return (0);
 	while (s[i])
 		i++;
 	return (i);
 }
 
-char	*ft_strdup(char *str, int len)
+char	*ft_strdup(char *s, int len)
 {
-	char	*array;
-	int		count;
+	char	*s1;
+	int		i;
 
-	if (!str || !len)
+	if (s == NULL || len == 0)
 		return (NULL);
-	count = -1;
-	array = (char *)malloc((len + 1) * sizeof(char));
-	while (++count < len)
-		array[count] = str[count];
-	array[count] = '\0';
-	return (array);
+	i = -1;
+	s1 = (char *)malloc((len + 1) * sizeof(char));
+	if (s1 == NULL)
+		return (NULL);
+	while (++i < len)
+		s1[i] = s[i];
+	s1[i] = '\0';
+	return (s1);
 }
 
 char	*ft_strjoin(char *s1, char *s2)
 {
 	size_t	i;
 	int		len;
-	char	*array;
+	char	*s3;
 
 	i = 0;
 	len = ft_strlen(s2);
-	if (!s1)
+	if (s1 == NULL)
 		return (ft_strdup(s2, len));
-	len = len + ft_strlen(s1);
-	array = (char *)malloc(sizeof(char) * (len + 1));
-	if (!array)
+	len = ft_strlen(s2) + ft_strlen(s1);
+	s3 = (char *)malloc(sizeof(char) * (len + 1));
+	if (s3 == NULL)
 		return (NULL);
 	len = 0;
 	while (s1[i])
-		array[len++] = s1[i++];
+		s3[len++] = s1[i++];
 	i = 0;
 	while (s2[i])
-		array[len++] = s2[i++];
-	array[len] = '\0';
+		s3[len++] = s2[i++];
+	s3[len] = '\0';
 	free(s1);
-	return (array);
+	return (s3);
 }
 
-int	have_n(char	*temp)
+int	find_n(char	*temp)
 {
 	int		i;
 
-	if (!temp)
+	if (temp == NULL)
 		return (0);
 	i = -1;
 	while (temp[++i])
-		if (temp[i] == 10)
+		if (temp[i] == '\n')
 			return (1);
 	return (0);
 }
 
-char	*print_line(char **temp)
+char	*put_line(char **temp)
 {
-	int		n_pos;
-	char	*return_line;
-	char	*str;
+	int		i_n;
+	char	*line;
+	char	*s;
 
-	if (!*temp)
+	if (*temp == NULL)
 		return (NULL);
-	str = *temp;
-	n_pos = 0;
-	while (str[n_pos] && str[n_pos] != 10)
-		n_pos++;
-	if (str[n_pos] == 10)
-		n_pos++;
-	return_line = ft_strdup(str, n_pos);
-	*temp = ft_strdup(str + n_pos, ft_strlen(str + n_pos));
-	if (str)
-		free(str);
-	str = NULL;
-	return (return_line);
+	s = *temp;
+	i_n = 0;
+	while (s[i_n] != '\0' && s[i_n] != '\n')
+		i_n++;
+	if (s[i_n] == '\n')
+		i_n++;
+	line = ft_strdup(s, i_n);
+	*temp = ft_strdup(s + i_n, ft_strlen(s + i_n));
+	if (s)
+		free(s);
+	s = NULL;
+	return (line);
 }

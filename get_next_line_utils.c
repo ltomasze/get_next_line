@@ -6,7 +6,7 @@
 /*   By: ltomasze <ltomasze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 12:37:01 by ltomasze          #+#    #+#             */
-/*   Updated: 2024/04/11 13:39:11 by ltomasze         ###   ########.fr       */
+/*   Updated: 2024/09/24 11:08:47 by ltomasze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,8 @@ char	*put_line(char **temp)
 	*temp = ft_strdup(s + i_n, ft_strlen(s + i_n));
 	if (s)
 		free(s);
+	if (*temp)
+		free(*temp);
 	s = NULL;
 	return (line);
 }
